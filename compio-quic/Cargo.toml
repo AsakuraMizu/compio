@@ -1,0 +1,52 @@
+[package]
+name = "compio-quic"
+version = "0.1.0"
+description = "QUIC for compio"
+categories = ["asynchronous", "network-programming"]
+keywords = ["async", "net", "quic"]
+edition = { workspace = true }
+authors = { workspace = true }
+readme = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+# Workspace dependencies
+compio-buf = { workspace = true, features = ["bytes"] }
+compio-log = { workspace = true }
+compio-net = { workspace = true }
+compio-runtime = { workspace = true, features = ["event", "time"] }
+
+rustls = { workspace = true, default-features = false, features = [
+    "std",
+    "logging",
+    "ring",
+] }
+quinn-proto = "0.11.3"
+
+# Utils
+flume = { workspace = true }
+futures-util = { workspace = true }
+
+# Windows specific dependencies
+[target.'cfg(windows)'.dependencies]
+windows-sys = { workspace = true, features = ["Win32_Networking_WinSock"] }
+
+# Linux specific dependencies
+[target.'cfg(target_os = "linux")'.dependencies]
+
+[target.'cfg(unix)'.dependencies]
+libc = { workspace = true }
+
+[dev-dependencies]
+compio-driver = { workspace = true }
+compio-macros = { workspace = true }
+socket2 = { workspace = true, features = ["all"] }
+tracing-subscriber = "0.3.18"
+
+[features]
+default = []
